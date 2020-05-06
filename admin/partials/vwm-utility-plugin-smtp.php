@@ -84,14 +84,7 @@
                     </div>
                 </fieldset>
             </div>    
-            <div class="field-container">                        
-                <legend class="screen-reader-text"><span><?php _e('Enable SMTP Debug - Recommended for development purposes', $this->plugin_name);?></span></legend>
-                <label for="<?php echo $this->plugin_name;?>-smtp-debug">
-                    <input type="checkbox" id="<?php echo $this->plugin_name;?>-smtp-debug" name="<?php echo $this->plugin_name;?>[smtp_debug]" value="1" <?php checked($smtp_debug, 1);?>/>
-                    <span><?php esc_attr_e('Enable SMTP Debug - Recommended for development purposes', $this->plugin_name);?></span>
-                </label>
-            </div>
-            
+
             <!-- Test Email -->
             <?php if(!empty($smtp_port) && !empty($smtp_host)):
                 if(('1' == $smtp_authentication && !empty($smtp_username) && !empty($smtp_password)) || ('0' == $smtp_authentication)):
@@ -104,8 +97,7 @@
                     </button>
                     <div class="smtp-ajax-results hidden">
                         <p class="smtp-results-content updated"></p>
-                        <!--button class="button"><?php _e('View SMTP debug log', $this->plugin_name);?></button>    
-                        <div class="smtp-results-debug hidden"></div-->
+
                     </div>
                </fieldset> 
                 

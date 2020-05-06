@@ -372,63 +372,49 @@ class Vwm_Utility_Plugin_Admin {
             );
         }
 
-        $valid['smtp_debug'] = ( isset( $input['smtp_debug'] ) && !empty( $input['smtp_debug'] ) ) ? 1 : 0 ;
-
 
     	return $valid;
 
     }
 
-    public function vwm_send_smtp_email( $phpmailer ) {
+    function vwm_send_smtp_email( $phpmailer ){
+        if(!empty($this->vwm_utility_plugin_options['smtp_support']) && !empty($this->vwm_utility_plugin_options['smtp_host']) && !empty($this->vwm_utility_plugin_options['smtp_port'])){
+            // Define that we are sending with SMTP
+            $phpmailer->isSMTP();
 
-    	if( !empty( $this->vwm_utility_plugin_options['smtp_support'] ) && !empty( $this->vwm_utility_plugin_options['smtp_host']) && !empty( $this->vwm_utility_plugin_options['smtp_port'] ) ) {
+            // The hostname of the mail server
+            $phpmailer->Host = $this->vwm_utility_plugin_options['smtp_host'];
 
-    		// Define that we are sending with SMTP
-    		$phpmailer->isSMTP();
+            // Use SMTP authentication (true|false)
+            $phpmailer->SMTPAuth = true;
 
-    		// The hostname of the mail server
-    		$phpmailer->Host = $this->vwm_utility_plugin_options['smtp_host'];
+            // SMTP port number - likely to be 25, 465 or 587
+            $phpmailer->Port = $this->vwm_utility_plugin_options['smtp_port'];
+            
+            
 
-    		// SMTP port number - likely to be 25, 465 or 587
-    		$phpmailer->Port = $this->vwm_utility_plugin_options['smtp_port'];
-
-    		// Set SMTP Debug to true
-
-            if( '1' == $this->vwm_utility_plugin_options['smtp_debug'] ) {
-
-                $phpmailer->SMTPDebug = true;
-
-            }
-    		//$phpmailer->SMTPDebug = true;
-
-    		if( '1' == $this->vwm_utility_plugin_options['smtp_encryption'] ) {
+            if('1' == $this->vwm_utility_plugin_options['smtp_authentication']){
 
                 // Username to use for SMTP authentication
-    			$phpmailer->Username = $this->vwm_utility_plugin_options['smtp_username'];
+                $phpmailer->Username = $this->vwm_utility_plugin_options['smtp_username'];
 
                 // Password to use for SMTP authentication
-    			$phpmailer->Password = $this->vwm_utility_plugin_options['smtp_password'];
+                $phpmailer->Password = $this->vwm_utility_plugin_options['smtp_password'];
 
-    		}
+            }
 
             // The encryption system to use - ssl (deprecated) or tls
-    		$phpmailer->SMTPSecure = $this->vwm_utility_plugin_options['smtp_encryption'];
+            $phpmailer->SMTPSecure = $this->vwm_utility_plugin_options['smtp_encryption'];
 
-    		if( !empty( $this->vwm_utility_plugin_options['smtp_from_email'] ) ) {
+            if(!empty($this->vwm_utility_plugin_options['smtp_from_email']))
+                $phpmailer->From = $this->vwm_utility_plugin_options['smtp_from_email'];
 
-    			$phpmailer->From = $this->vwm_utility_plugin_options['smtp_from_email'];	
-
-    		}
-
-    		if( !empty( $this->vwm_utility_plugin_options['smtp_from_name'] ) ) {
-
-    			$phpmailer->FromName = $this->vwm_utility_plugin_options['smtp_from_name'];	
-
-    		}
-
-    	}
-
+            if(!empty($this->vwm_utility_plugin_options['smtp_from_name']))
+                $phpmailer->FromName = $this->vwm_utility_plugin_options['smtp_from_name'];
+        }
     }
+
+    
 
 	// Smtp ajax test email
     public function vwm_send_test_email_callback(){

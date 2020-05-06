@@ -53,7 +53,6 @@
 			$smtp_authentication = $options['smtp_authentication'];
 			$smtp_username = $options['smtp_username'];
 			$smtp_password = $options['smtp_password'];
-			$smtp_debug = $options['smtp_debug'];
 
 			/*
 			* Set up hidden fields
